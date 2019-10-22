@@ -26,13 +26,23 @@ fn = "/spreadspoke_scores.csv";
 % Import the data
 game_data = readtable(fn, opts);
 
-
+disp("Game data imported");
 %% Clear temporary variables
 clear opts
 
 %find(game_data.schedule_season >= 2000)
 
 
-r = find(game_data.schedule_season<=2010);
+
+r = find(game_data.schedule_season==2018);
 filtered = game_data(r,:);
-scatter(filtered.schedule_season, filtered.score_home);
+total_score = filtered.score_home + filtered.score_away;
+over_under = str2double(filtered.over_under_line);
+
+
+scatter(over_under, total_score);
+refline(1, 0);
+title("Total score versus over-under");
+ylabel("Total Score");
+xlabel("Over Under Bet");
+
