@@ -30,19 +30,45 @@ disp("Game data imported");
 %% Clear temporary variables
 clear opts
 
-%find(game_data.schedule_season >= 2000)
 
 
-
-r = find(game_data.schedule_season==2018);
+%Look only at games from 2018
+r = find(game_data.schedule_season<2019);
 filtered = game_data(r,:);
+r = find(filtered.schedule_season>2015);
+filtered = filtered(r, :);
+
+%Change the color of the point based on how hot the weather was for that game
+%Red = Temperature about 70 degrees
+%Blue = Temperature at or below 70 degrees
+%Set default value of the color to be blue
+colors = ones(height(filtered),3);
+red = [1 0 0];
+blue = [0 0 1];
+
+%Modifies the color value depending on the game time temperature using a for loop and conditional statements
+for c = 1:height(filtered)
+    if filtered(c,:).weather_temperature > 70
+        colors(c,:) = red;
+    else
+        colors(c,:) = blue;
+    end
+end
+
 total_score = filtered.score_home + filtered.score_away;
 over_under = str2double(filtered.over_under_line);
 
-
-scatter(over_under, total_score);
+%gscatter(over_under, total_score, colors, 'rb','.', 25);
+scatter(over_under, total_score, 50, colors, 'filled');
 refline(1, 0);
-title("Total score versus over-under");
+title("Total Score Versus Over-Under Bet");
 ylabel("Total Score");
-xlabel("Over Under Bet");
+xlabel("Over-Under Bet");
+
+hold on;
+
+h = zeros(2, 1);
+h(1) = plot(NaN,NaN,'.r');
+h(2) = plot(NaN,NaN, '.b');
+legend(h, 'Above 70','Below 70');
 
