@@ -60,15 +60,21 @@ over_under = str2double(filtered.over_under_line);
 
 %gscatter(over_under, total_score, colors, 'rb','.', 25);
 scatter(over_under, total_score, 50, colors, 'filled');
-refline(1, 0);
+
+hold on;
+%refline(1, 0);
+lobf = polyfit(over_under, total_score, 1);
+x = linspace(35, 65);
+y = polyval(lobf, x);
+
 title("Total Score Versus Over-Under Bet");
 ylabel("Total Score");
 xlabel("Over-Under Bet");
 
-hold on;
-
-h = zeros(2, 1);
-h(1) = plot(NaN,NaN,'.r');
-h(2) = plot(NaN,NaN, '.b');
-legend(h, 'Above 70','Below 70');
+%Shortcut way to display the legend with the two colors
+h = zeros(3, 1);
+h(1) = scatter(NaN,NaN, 50, [0 0 1],'filled');
+h(2) = scatter(NaN,NaN, 50, [1 0 0],'filled');
+h(3) = plot(x,y);
+legend(h, 'Above 70°','Below 70°', 'Line of Best Fit', 'Position', [.85 .7 .1 .2]);
 
