@@ -76,5 +76,8 @@ h = zeros(3, 1);
 h(1) = scatter(NaN,NaN, 50, [0 0 1],'filled');
 h(2) = scatter(NaN,NaN, 50, [1 0 0],'filled');
 h(3) = plot(x,y);
-legend(h, 'Above 70°','Below 70°', 'Line of Best Fit', 'Position', [.85 .7 .1 .2]);
+m = lobf(1);
+b = lobf(2);
+ll = sprintf('y = %.2fx + %.2f', m,b);
+legend(h, 'Above 70°','Below 70°', ll, 'Position', [.85 .7 .1 .2]);
 
